@@ -173,7 +173,7 @@ private fun AiBillChatView(
                 ) {
                     itemsIndexed(
                         items = billChatList,
-                    ) { index, item ->
+                    ) { _, item ->
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -683,8 +683,9 @@ private fun AiBillChatView(
             ) {
                 val focusRequesterForContent = remember { FocusRequester() }
                 LaunchedEffect(key1 = focusRequesterForContent) {
-                    /*focusRequesterForContent.requestFocus()
-                    keyboardController?.show()*/
+                    delay(500)
+                    focusRequesterForContent.requestFocus()
+                    keyboardController?.show()
                 }
                 Box(
                     modifier = Modifier

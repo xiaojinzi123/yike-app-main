@@ -4,6 +4,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal val Project.libs
@@ -44,12 +45,20 @@ fun CommonExtension<*, BuildType, *, *, *, *>.basicConfig(project: Project) {
         targetCompatibility(JavaVersion.VERSION_17)
     }
     project.tasks.withType(KotlinCompile::class.java) {
-        kotlinOptions {
+
+    }
+    project.tasks.withType(KotlinCompile::class.java) {
+        /*kotlinOptions {
             jvmTarget = JavaVersion.VERSION_17.toString()
+        }*/
+        compilerOptions {
+            jvmTarget.set(
+                JvmTarget.JVM_17
+            )
         }
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 

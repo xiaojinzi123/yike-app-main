@@ -94,7 +94,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@MainThread
+@AnyThread
 fun commonAppToast(context: Context = app, @StringRes contentRsd: Int, isShort: Boolean = true) {
     commonAppToast(context = context, content = context.getString(contentRsd), isShort = isShort)
 }
@@ -108,24 +108,9 @@ fun commonAppToast(context: Context = app, content: String, isShort: Boolean = t
             if (isShort) Toast.LENGTH_SHORT else Toast.LENGTH_LONG
         ).show()
     }
-    AppScope.launch(context = Dispatchers.Main) {
+    AppScope.launch(context = Dispatchers.Main.immediate) {
         runnable.run()
     }
-}
-
-@Composable
-fun AppStateBar(
-    content: @Composable () -> Unit
-) {
-    val systemUiController = rememberSystemUiController()
-    val useDarkIcons = !isSystemInDarkTheme()
-    SideEffect {
-        systemUiController.setSystemBarsColor(
-            color = Color.Transparent,
-            darkIcons = useDarkIcons,
-        )
-    }
-    content()
 }
 
 @Composable

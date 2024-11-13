@@ -8,6 +8,7 @@ import com.xiaojinzi.support.ktx.AppScope
 import com.xiaojinzi.support.ktx.HotStateFlow
 import com.xiaojinzi.support.ktx.MutableSharedStateFlow
 import com.xiaojinzi.support.ktx.app
+import com.xiaojinzi.tally.lib.res.SupportLoginMethod
 import com.xiaojinzi.tally.lib.res.ui.THEME_NAME_CHINA_RED
 import com.xiaojinzi.tally.lib.res.ui.THEME_NAME_CUSTOM1
 import com.xiaojinzi.tally.lib.res.ui.THEME_NAME_FOLLOW_SYSTEM
@@ -18,6 +19,10 @@ import com.xiaojinzi.tally.lib.res.ui.THEME_NAME_TITIAN_RED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * 对应不同的 App
+ * 对于每一个 App 只会有一个实现类
+ */
 interface AppInfoSpi {
 
     companion object {
@@ -120,6 +125,11 @@ interface AppInfoSpi {
     val wxAppId: String
 
     /**
+     * 支持的登录方式列表
+     */
+    val supportLoginMethodList: List<SupportLoginMethod>
+
+    /**
      * 切换主题, <= 0 是默认的主题
      * 1    亮色
      * 2    暗色
@@ -218,6 +228,9 @@ abstract class BaseAppInfoSpiImpl : AppInfoSpi {
         get() = "<~~~备案~~~>"
 
     override val wxAppId: String = ""
+
+    override val supportLoginMethodList: List<SupportLoginMethod>
+        get() = emptyList()
 
     final override fun switchTheme(themeIndex: Int) {
         themeIndexStateOb.value = themeIndex

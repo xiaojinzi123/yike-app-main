@@ -88,3 +88,10 @@ sealed class OssProcess(
     )
 
 }
+
+@Keep
+enum class SupportLoginMethod {
+    // 微信登录
+    WX,
+    Google,
+}

@@ -72,6 +72,7 @@ import com.xiaojinzi.support.compose.util.circleClip
 import com.xiaojinzi.support.compose.util.clickableNoRipple
 import com.xiaojinzi.support.ktx.nothing
 import com.xiaojinzi.tally.lib.res.R
+import com.xiaojinzi.tally.lib.res.SupportLoginMethod
 import com.xiaojinzi.tally.lib.res.ui.APP_PADDING_LARGE
 import com.xiaojinzi.tally.lib.res.ui.APP_PADDING_NORMAL
 import com.xiaojinzi.tally.lib.res.ui.AppWidthSpace
@@ -547,6 +548,7 @@ private fun LoginView(
                 )
             }
 
+            /*其他登录方式*/
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -557,28 +559,52 @@ private fun LoginView(
                 horizontalArrangement = Arrangement.Center,
             ) {
 
-                IconButton(
-                    onClick = {
-                        keyboardController?.hide()
-                        focusManager.clearFocus(force = true)
-                        vm.addIntent(
-                            intent = LoginIntent.LoginByWx(
-                                context = context,
+                AppServices
+                    .appInfoSpi
+                    .supportLoginMethodList
+                    .forEach { loginMethod ->
+                        IconButton(
+                            modifier = Modifier
+                                .padding(horizontal = APP_PADDING_NORMAL.dp, vertical = 0.dp)
+                                .nothing(),
+                            onClick = {
+                                keyboardController?.hide()
+                                focusManager.clearFocus(force = true)
+                                when (loginMethod) {
+                                    SupportLoginMethod.WX -> {
+                                        vm.addIntent(
+                                            intent = LoginIntent.LoginByWx(
+                                                context = context,
+                                            )
+                                        )
+                                    }
+
+                                    SupportLoginMethod.Google -> {
+
+                                    }
+                                }
+                            },
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .size(size = 32.dp)
+                                    .nothing(),
+                                painter = painterResource(
+                                    id = when (loginMethod) {
+                                        SupportLoginMethod.WX -> {
+                                            R.drawable.res_wechat1
+                                        }
+
+                                        SupportLoginMethod.Google -> {
+                                            R.drawable.res_google1
+                                        }
+                                    },
+                                ),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
                             )
-                        )
-                    },
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(size = 32.dp)
-                            .nothing(),
-                        painter = painterResource(
-                            id = R.drawable.res_wechat1,
-                        ),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                        }
+                    }
 
             }
 
